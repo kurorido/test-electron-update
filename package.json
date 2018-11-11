@@ -1,6 +1,6 @@
 {
   "name": "upgrade",
-  "version": "0.0.12",
+  "version": "0.0.12-latest",
   "author": "Roli <kuroridoplayer@gmail.com>",
   "description": "An electron-vue project",
   "license": null,
