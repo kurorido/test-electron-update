@@ -1,5 +1,6 @@
 'use strict'
 
+// import updateChecker from '../utils/updateChecker.js'
 import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow } from 'electron'
 
@@ -23,7 +24,10 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000
+    width: 1000,
+    webPreferences: {
+      webSecurity: false
+    }
   })
 
   mainWindow.loadURL(winURL)
@@ -31,6 +35,10 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  // updateChecker()
+
+  // mainWindow.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)
@@ -59,5 +67,7 @@ autoUpdater.on('update-downloaded', () => {
 })
 
 app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+  if (process.env.NODE_ENV === 'production') {
+    autoUpdater.checkForUpdates()
+  }
 })

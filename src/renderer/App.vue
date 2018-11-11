@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Ver 2</h1>
+    <h1>Ver 3</h1>
   </div>
 </template>
 
