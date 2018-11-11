@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>Ver 12</h1>
+    <h1>Ver 13</h1>
     <div v-html="lines"></div>
   </div>
 </template>
