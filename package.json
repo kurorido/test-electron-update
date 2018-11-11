@@ -26,9 +26,8 @@
     "productName": "upgrade",
     "publish": [
       {
-        "provider": "github",
-        "owner": "kurorido",
-        "repo": "test-electron-update"
+        "provider": "s3",
+        "bucket": "com.electron.upgrade.test"
       }
     ],
     "appId": "com.example.yourapp",

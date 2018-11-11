@@ -25,7 +25,9 @@ let mainWindow
 
 function sendStatusToWindow (text) {
   log.info(text)
-  mainWindow.webContents.send('message', text)
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text)
+  }
 }
 
 function createWindow () {
