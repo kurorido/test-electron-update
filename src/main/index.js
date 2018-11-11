@@ -96,9 +96,9 @@ autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Update downloaded')
 })
 
-// app.on('ready', () => {
-//   if (process.env.NODE_ENV === 'production') {
-//   // autoUpdater.checkForUpdates()
-//     autoUpdater.checkForUpdatesAndNotify()
-//   }
-// })
+app.on('ready', () => {
+  if (process.env.NODE_ENV === 'production') {
+  // autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdatesAndNotify()
+  }
+})
