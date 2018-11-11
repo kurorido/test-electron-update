@@ -24,6 +24,13 @@
   },
   "build": {
     "productName": "upgrade",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "kurorido",
+        "repo": "test-electron-update"
+      }
+    ],
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"
@@ -58,6 +65,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "electron-log": "^2.2.17",
     "electron-updater": "^3.2.3",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",

@@ -4,6 +4,12 @@
 import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow } from 'electron'
 
+const log = require('electron-log')
+
+autoUpdater.logger = log
+autoUpdater.logger.transports.file.level = 'info'
+log.info('App starting...')
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -17,6 +23,11 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+function sendStatusToWindow (text) {
+  log.info(text)
+  mainWindow.webContents.send('message', text)
+}
+
 function createWindow () {
   /**
    * Initial window options
@@ -24,10 +35,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 563,
     useContentSize: true,
-    width: 1000,
-    webPreferences: {
-      webSecurity: false
-    }
+    width: 1000
   })
 
   mainWindow.loadURL(winURL)
@@ -35,10 +43,6 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-
-  // updateChecker()
-
-  // mainWindow.webContents.openDevTools()
 }
 
 app.on('ready', createWindow)
@@ -66,8 +70,31 @@ autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
 
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...')
+})
+autoUpdater.on('update-available', (info) => {
+  sendStatusToWindow('Update available.')
+})
+autoUpdater.on('update-not-available', (info) => {
+  sendStatusToWindow('Update not available.')
+})
+autoUpdater.on('error', (err) => {
+  sendStatusToWindow('Error in auto-updater. ' + err)
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let logMessage = 'Download speed: ' + progressObj.bytesPerSecond
+  logMessage = logMessage + ' - Downloaded ' + progressObj.percent + '%'
+  logMessage = logMessage + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
+  sendStatusToWindow(logMessage)
+})
+autoUpdater.on('update-downloaded', (info) => {
+  sendStatusToWindow('Update downloaded')
+})
+
 app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') {
-    autoUpdater.checkForUpdates()
+    // autoUpdater.checkForUpdates()
+    autoUpdater.checkForUpdatesAndNotify()
   }
 })
