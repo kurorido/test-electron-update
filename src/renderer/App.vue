@@ -1,13 +1,27 @@
 <template>
   <div id="app">
-    <h1>Ver 7</h1>
+    <h1>Ver 8</h1>
+    <div v-html="lines"></div>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'upgrade'
+const { ipcRenderer } = require('electron')
+
+export default {
+  name: 'upgrade',
+  data () {
+    return {
+      lines: ''
+    }
+  },
+  mounted () {
+    console.log('mounted')
+    ipcRenderer.on('message', (event, message) => {
+      this.lines += message + '<br/>'
+    })
   }
+}
 </script>
 
 <style>

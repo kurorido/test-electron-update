@@ -8,7 +8,6 @@ const log = require('electron-log')
 
 autoUpdater.logger = log
 autoUpdater.logger.transports.file.level = 'info'
-log.info('App starting...')
 
 /**
  * Set `__static` path to static files in production
@@ -18,10 +17,11 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
+
+let mainWindow
 
 function sendStatusToWindow (text) {
   log.info(text)
@@ -39,6 +39,10 @@ function createWindow () {
   })
 
   mainWindow.loadURL(winURL)
+
+  mainWindow.webContents.once('dom-ready', () => {
+    sendStatusToWindow('App starting...')
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
@@ -92,9 +96,9 @@ autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Update downloaded')
 })
 
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') {
-    // autoUpdater.checkForUpdates()
-    autoUpdater.checkForUpdatesAndNotify()
-  }
-})
+// app.on('ready', () => {
+//   if (process.env.NODE_ENV === 'production') {
+//   // autoUpdater.checkForUpdates()
+//     autoUpdater.checkForUpdatesAndNotify()
+//   }
+// })
